@@ -9,7 +9,7 @@ public class PersonMovement : MonoBehaviour
     public float gravity = 20.0F;
     private Vector3 moveDirection = Vector3.zero;
 
-    void Update()
+    void FixedUpdate()
     {
         CharacterController controller = GetComponent<CharacterController>();
 

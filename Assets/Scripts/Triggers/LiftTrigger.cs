@@ -10,7 +10,7 @@ public class LiftTrigger : MonoBehaviour
 
     private bool onTrigger = false;
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (!onTrigger)
         {
