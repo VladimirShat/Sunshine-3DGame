@@ -7,18 +7,12 @@ public class EscMenu : MonoBehaviour
 {
     public GameObject menuPanel;
     public KeyCode showMenuKey = KeyCode.Escape;
-    public GameObject mainCamera;
     public GameObject player;
 
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
-        if(mainCamera == null)
-        {
-            mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
-        }
 
         if(player == null)
         {
@@ -35,8 +29,6 @@ public class EscMenu : MonoBehaviour
 
             menuPanel.SetActive(true);
 
-            MouseLook ml = mainCamera.GetComponent<MouseLook>();
-            ml.enabled = false;
             MouseLook p = player.GetComponent<MouseLook>();
             p.enabled = false;
 
@@ -51,8 +43,6 @@ public class EscMenu : MonoBehaviour
 
         menuPanel.SetActive(false);
 
-        MouseLook ml = mainCamera.GetComponent<MouseLook>();
-        ml.enabled = true;
         MouseLook p = player.GetComponent<MouseLook>();
         p.enabled = true;
 
