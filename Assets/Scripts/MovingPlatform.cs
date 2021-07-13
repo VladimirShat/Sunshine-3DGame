@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Elevator : MonoBehaviour
+public class MovingPlatform : MonoBehaviour
 {
-    enum ElevatorStates{Up, Down, Stop};
-    ElevatorStates states;
+    enum PlatformStates{Up, Down, Stop};
+    PlatformStates states;
 
-    public Transform top;
-    public Transform bottom;
+    public Transform start;
+    public Transform end;
 
     public float smooth;
 
@@ -19,23 +19,23 @@ public class Elevator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        states = ElevatorStates.Stop;
+        states = PlatformStates.Stop;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        if(Input.GetKeyDown(KeyCode.U) && hasRider)
+        if(hasRider)
         {
-            states = ElevatorStates.Up;
+            states = PlatformStates.Up;
         }
 
-        if (Input.GetKeyDown(KeyCode.D) && hasRider)
+        if (!hasRider)
         {
-            states = ElevatorStates.Down;
+            states = PlatformStates.Down;
         }
 
-        FSM();
+        MovePlatform();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -56,21 +56,21 @@ public class Elevator : MonoBehaviour
         }
     }
 
-    void FSM()
+    void MovePlatform()
     {
-        if(states == ElevatorStates.Down)
+        if(states == PlatformStates.Down)
         {
-            newPos = bottom.position;
+            newPos = start.position;
             transform.position = Vector3.Lerp(transform.position, newPos, smooth * Time.deltaTime);
         }
 
-        if (states == ElevatorStates.Up)
+        if (states == PlatformStates.Up)
         {
-            newPos = top.position;
+            newPos = end.position;
             transform.position = Vector3.Lerp(transform.position, newPos, smooth * Time.deltaTime);
         }
 
-        if (states == ElevatorStates.Stop)
+        if (states == PlatformStates.Stop)
         {
 
         }

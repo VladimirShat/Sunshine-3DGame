@@ -5,22 +5,20 @@ using UnityEngine;
 public class PickUpObject : MonoBehaviour
 {
     public GameObject tempParent;
-    public float canHoldDistance;
-    public float throwForce = 600;
+    public float canHoldDistance = 1f;
+    public float throwForce = 600f;
 
-    private GameObject item;
     private Vector3 objectPos;
     private float distance;
     private bool isHolding = false;
 
     private void Start()
     {
-        item = gameObject;
     }
 
     void Update()
     {
-        distance = Vector3.Distance(item.transform.position, tempParent.transform.position);
+        distance = Vector3.Distance(transform.position, tempParent.transform.position);
 
         //breaking the connection
         if (distance >= canHoldDistance)
@@ -30,21 +28,21 @@ public class PickUpObject : MonoBehaviour
 
         if (isHolding == true)
         {
-            item.GetComponent<Rigidbody>().velocity = Vector3.zero;
-            item.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+            GetComponent<Rigidbody>().velocity = Vector3.zero;
+            GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
 
             if (Input.GetMouseButtonDown(1))
             {
-                item.GetComponent<Rigidbody>().AddForce(tempParent.transform.forward * throwForce);
+                GetComponent<Rigidbody>().AddForce(tempParent.transform.forward * throwForce);
                 isHolding = false;
             }
         }
         else
         {
-            objectPos = item.transform.position;
-            item.transform.SetParent(null);
-            item.GetComponent<Rigidbody>().useGravity = true;
-            item.transform.position = objectPos;
+            objectPos = transform.position;
+            transform.SetParent(null);
+            GetComponent<Rigidbody>().useGravity = true;
+            transform.position = objectPos;
         }
     }
 
@@ -54,10 +52,10 @@ public class PickUpObject : MonoBehaviour
         {
             isHolding = true;
 
-            item.GetComponent<Rigidbody>().useGravity = false;
-            item.GetComponent<Rigidbody>().detectCollisions = true;
+            GetComponent<Rigidbody>().useGravity = false;
+            GetComponent<Rigidbody>().detectCollisions = true;
 
-            item.transform.SetParent(tempParent.transform);
+            transform.SetParent(tempParent.transform);
         }
     }
 

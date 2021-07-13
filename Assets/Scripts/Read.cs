@@ -5,34 +5,24 @@ using UnityEngine.UI;
 
 public class Read : MonoBehaviour
 {
-    public GameObject plane;
-    public GameObject Camera;
-    public GameObject Person;
+    public GameObject readPanel;
+    public GameObject player;
 
     void OnMouseDown()
     {
-        plane.SetActive(true);
+        readPanel.SetActive(true);
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        MouseLook ml = Camera.GetComponent<MouseLook>();
-        ml.enabled = false;
-        MouseLook p = Person.GetComponent<MouseLook>();
+        PlayerLook p = player.GetComponent<PlayerLook>();
         p.enabled = false;
         Time.timeScale = 0f;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-    }
-
     public void Cancel()
     {
-        plane.SetActive(false);
-        MouseLook ml = Camera.GetComponent<MouseLook>();
-        ml.enabled = true;
-        MouseLook p = Person.GetComponent<MouseLook>();
+        readPanel.SetActive(false);
+        PlayerLook p = player.GetComponent<PlayerLook>();
         p.enabled = true;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;

@@ -4,20 +4,27 @@ using UnityEngine;
 
 public class Selectable : MonoBehaviour
 {
-    private Color originalColor;
+    public float canHoldDistance = 1.5f;
+    public float throwForce = 600f;
 
-    private void Start()
+    public bool isHolding = false;
+    private Vector3 objectPos;
+
+    public void PickUp(GameObject tempParent)
     {
-        originalColor = GetComponent<Renderer>().material.color;
+        isHolding = true;
+
+        GetComponent<Rigidbody>().useGravity = false;
+        GetComponent<Rigidbody>().detectCollisions = true;
+
+        transform.SetParent(tempParent.transform);
     }
 
-    public void Select()
+    public void DePickUp()
     {
-        GetComponent<Renderer>().material.color = Color.yellow;
-    }
-
-    public void Deselect()
-    {
-        GetComponent<Renderer>().material.color = originalColor;
+        objectPos = transform.position;
+        transform.SetParent(null);
+        GetComponent<Rigidbody>().useGravity = true;
+        transform.position = objectPos;
     }
 }

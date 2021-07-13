@@ -29,8 +29,8 @@ public class EscMenu : MonoBehaviour
 
             menuPanel.SetActive(true);
 
-            MouseLook p = player.GetComponent<MouseLook>();
-            p.enabled = false;
+            PlayerLook pLook = player.GetComponent<PlayerLook>();
+            pLook.enabled = false;
 
             Time.timeScale = 0f;
         }
@@ -43,8 +43,8 @@ public class EscMenu : MonoBehaviour
 
         menuPanel.SetActive(false);
 
-        MouseLook p = player.GetComponent<MouseLook>();
-        p.enabled = true;
+        PlayerLook pLook = player.GetComponent<PlayerLook>();
+        pLook.enabled = true;
 
         Time.timeScale = 1f;
     }

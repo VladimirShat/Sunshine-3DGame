@@ -4,41 +4,60 @@ using UnityEngine;
 
 public class PlayerRay : MonoBehaviour
 {
-    private Selectable currentSelectable;
+    public GameObject hand;
+
+    private float distance;
+    Selectable selectable;
 
     void Update()
     {
-        Ray ray = new Ray();
-        ray.origin = transform.position;
-        ray.direction = transform.forward;
+        Ray ray = new Ray(transform.position, transform.forward);
 
-        //debug ray
-        Debug.DrawRay(transform.position, transform.forward*10f, Color.yellow);
+        RaycastHit hitInfo;
 
-        RaycastHit hit;
-
-        if (Physics.Raycast(ray, out hit))
+        if (Physics.Raycast(ray, out hitInfo))
         {
-            Selectable selectable = hit.collider.gameObject.GetComponent<Selectable>();
+            //debug ray
+            Debug.DrawRay(transform.position, transform.forward * 10f, Color.yellow);
+
+            selectable = hitInfo.collider.gameObject.GetComponent<Selectable>();
+
             if (selectable)
             {
-                if (currentSelectable && currentSelectable != selectable)
+                distance = Vector3.Distance(hand.transform.position, hitInfo.transform.position);
+
+                if (Input.GetMouseButtonDown(0) && distance <= selectable.canHoldDistance)
                 {
-                    currentSelectable.Deselect();
+                    selectable.PickUp(hand);
                 }
-                currentSelectable = selectable;
-                selectable.Select();
+
+                if (Input.GetMouseButtonUp(0))
+                {
+                    selectable.isHolding = false;
+                }
+
+                //breaking the connection
+                if (distance >= selectable.canHoldDistance)
+                {
+                    selectable.isHolding = false;
+                }
+
+                if (selectable.isHolding)
+                {
+                    selectable.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                    selectable.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+
+                    if (Input.GetMouseButtonDown(1))
+                    {
+                        selectable.GetComponent<Rigidbody>().AddForce(hand.transform.forward * selectable.throwForce);
+                        selectable.isHolding = false;
+                    }
+                }
+                else
+                {
+                    selectable.DePickUp();
+                }
             }
-            else if (currentSelectable)
-            {
-                currentSelectable.Deselect();
-                currentSelectable = null;
-            }
-        }
-        else if (currentSelectable)
-        {
-            currentSelectable.Deselect();
-            currentSelectable = null;
         }
     }
 }
